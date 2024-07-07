@@ -3,7 +3,15 @@ import webbrowser
 import pyttsx3
 import requests
 import musiclibrary
+import os
+from dotenv import load_dotenv
 from transformers import pipeline
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the API key from environment variable
+NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 
 # Initialize text-to-speech engine
 engine = pyttsx3.init()
@@ -36,7 +44,7 @@ def processCommand(c):
         link = musiclibrary.music[song]
         webbrowser.open(link)
     elif "news" in c.lower():
-        r = requests.get("https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=69b00316f403455f92249fe8ecab625e")
+        r = requests.get(f"https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey={NEWS_API_KEY}")
         if r.status_code == 200:
             data = r.json()
             articles = data.get('articles', [])
@@ -69,6 +77,10 @@ if __name__ == "__main__":
 
                     # Process the command
                     processCommand(command)
+                elif word.lower()!= "athena":
+                    speak("wrong pronounciation")
+        
+        
 
         except Exception as e:
             print(f"Error: {e}")
