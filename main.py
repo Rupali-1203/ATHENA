@@ -6,6 +6,7 @@ import musiclibrary
 import os
 from dotenv import load_dotenv
 from transformers import pipeline
+from fuzzywuzzy import fuzz
 
 # Load environment variables from .env file
 load_dotenv()
@@ -18,6 +19,11 @@ engine = pyttsx3.init()
 
 # Initialize Hugging Face text generation pipeline with PyTorch support
 generator = pipeline('text-generation', model='gpt2')  # Ensure PyTorch is installed
+
+# Function to check if the detected word is one of the variations of "ATHENA"
+def is_wake_word(word):
+    return fuzz.ratio(word.lower(), "athena")  > 20  # Adjust the threshold as needed
+
 
 # Function to convert text to speech
 def speak(text):
@@ -62,12 +68,13 @@ if __name__ == "__main__":
             with sr.Microphone() as source:
                 recognizer = sr.Recognizer()
                 print("Listening for 'ATHENA'...")
+                # speak("athena")
 
                 # Listen for the wake word "ATHENA"
                 audio = recognizer.listen(source, timeout=5, phrase_time_limit=1)
                 word = recognizer.recognize_google(audio)
 
-                if word.lower() == "athena":
+                if is_wake_word(word):
                     speak("Yes")
                     
                     # Listen for the actual command
@@ -77,9 +84,6 @@ if __name__ == "__main__":
 
                     # Process the command
                     processCommand(command)
-                elif word.lower()!= "athena":
-                    speak("wrong pronounciation")
-        
         
 
         except Exception as e:
