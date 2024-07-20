@@ -59,7 +59,7 @@ ATHENA processes commands using Hugging Face's GPT-2 model and converts text to 
 
 
 
-## Team Members
+## Profile
 [![LinkedIn](https://img.shields.io/badge/LINKEDIN-RUPALI%20SUSARPATIL-blue)](https://www.linkedin.com/in/rupali-susar-patil-86b297228/)
 
 ## Acknowledgments:
